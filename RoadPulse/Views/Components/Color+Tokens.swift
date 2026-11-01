@@ -34,6 +34,13 @@ extension Color {
 
     static let fixedGrey = Color(ColorToken.fixedGrey)
 
+    // MARK: Fixed (identical in light and dark, so no colour set)
+
+    /// Glyphs and strokes drawn on a saturated fill (severity pins, the resolved check).
+    static let onFill = Color.white
+    /// Drop shadows and scrims; callers set the opacity.
+    static let shadowTint = Color.black
+
     init(_ token: ColorToken) {
         self.init(token.rawValue)
     }

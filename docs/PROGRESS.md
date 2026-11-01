@@ -15,8 +15,8 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 | F6 Hazards list & gallery | PRD#F6 | 2 Nov | ✅ |
 | F7 Weather API | PRD#F7 | 2 Nov | ✅ |
 | 🖥 Mac visit 2: test report flow, gestures, API | | 2 Nov | ☐ |
-| F8 Insights & Drive Mode | PRD#F8 | 3 Nov | ◐ code + tests written, awaiting CI |
-| F9 Polish & docs | PRD#F9 | 3 Nov | ◐ code + docs written, awaiting CI (screenshots after Mac visit 3) |
+| F8 Insights & Drive Mode | PRD#F8 | 3 Nov | ✅ |
+| F9 Polish & docs | PRD#F9 | 3 Nov | ✅ (README screenshots after Mac visit 3) |
 | 🖥 Mac visit 3: full run-through, screenshots, demo video | | 3 Nov | ☐ |
 | Buffer + submission | | 4 Nov | ☐ |
 
@@ -34,6 +34,7 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 - 1 Nov: F7 written: `WeatherService` (Open-Meteo, last 7 days; `async` method + Combine `dataTaskPublisher` variant sharing one `parse`), `WeatherResponse` (Codable, `convertFromSnakeCase`, null days skipped), `WeatherError`, `RainfallViewModel` (Combine sink → store `rainfallMM`; loading / loaded / failed + Retry; `cancel()` on disappear), `RainfallRow` in map sheet and hazard detail (risk badge updates from the stored value), pull-to-refresh backfills up to 10 missing hazards (async). Tests: `URLProtocol` stub + JSON fixture, errors, publisher, view model, backfill. F6 is still ◐: the last CI run predates it, so push and run /ci.
 - 1 Nov: F6 and F7 ticked (CI green, run 41318224760). F8 written. Insights: `InsightsStats` (per-Area counts, severity counts, worst roads = Σ severity/(1+km)), `StatCard` + `CountingNumber`, hand-drawn `BarChart` (`BarShape`, staggered springs), `SeverityDonut` (`DonutSliceShape` with `AnimatablePair`, `SpatialTapGesture` hit-test via `DonutGeometry`), `WorstRoadsList`. Drive: `MotionService` (CoreMotion 50 Hz) / `ReplayMotionService` (bundled `sample_drive.csv`, 90 s along the commute route), `SpikeDetector` (0.5 s rolling RMS), `DriveViewModel`, `TripRepository`, `HoldToStartButton` (long-press + ring), `WaveformView`, `DriveSheet`, yellow FAB on the Map, coloured `MapPolyline`/`MapCircle` trail. Tests: stats, donut maths, shapes, detector, CSV, trips, view model, replay. Not yet compiled: push and run /ci.
 - 1 Nov: F9 written: real AppIcon (1024 px: road, lane dashes, pulsing pothole), Reduce Motion fixes (filter chips, search bar, permission line, confirm step, symbol bounces), Dynamic Type (`@ScaledMetric` thumbnail, scalable symbols), `layoutPriority` + `alignmentGuide` rows, tab-switch haptic (respects Settings), README (features, Mermaid, ML results, GPX), SYLLABUS_MAP fully ✅. `DocsAuditTests` fails if a syllabus row isn't ✅ or names a missing file, or the icon is missing. F8 and F9 are both uncompiled: push and run /ci.
+- 1 Nov: /audit: every SYLLABUS_MAP symbol grep-verified (2 rows reworded to name the right file). Literal white/black in views → `Color.onFill` / `Color.shadowTint` tokens; AnalyzeStep icon now scales with Dynamic Type; donut ring has a VoiceOver summary. Remaining fixed fonts (pin glyph, confidence ring number) are deliberate and commented.
 
 ## Blockers / notes
 <!-- e.g. lab Mac Xcode version, simulator issues -->

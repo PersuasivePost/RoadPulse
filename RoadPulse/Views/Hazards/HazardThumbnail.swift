@@ -30,7 +30,7 @@ struct HazardThumbnail: View {
             if hazard.isFixed {
                 Image(systemName: "checkmark.circle.fill")
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(Color.white, Color.fixedGrey)
+                    .foregroundStyle(Color.onFill, Color.fixedGrey)
                     .padding(4)
             }
         }

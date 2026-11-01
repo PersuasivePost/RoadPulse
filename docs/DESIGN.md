@@ -20,6 +20,8 @@
 | `sev5` | #D7263D | #FF453A | severe |
 | `fixedGrey` | #A0A6B0 | #5C626C | resolved hazards |
 
+Two fixed code-only tokens (same in both appearances): `onFill` (white glyphs on saturated fills) and `shadowTint` (black, opacity set at the call site). No other literal colours in views.
+
 Severity colour always comes from one helper (`Severity.color`). Never hard-code it.
 
 ## Typography

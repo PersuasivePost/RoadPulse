@@ -39,7 +39,7 @@ struct SearchBar: View {
             .padding(.vertical, 12)
             .background(Capsule().fill(Color.surfaceRaised))
             .overlay(Capsule().stroke(Color.inkMuted.opacity(0.12), lineWidth: 1))
-            .shadow(color: Color.black.opacity(0.12), radius: 8, y: 2)
+            .shadow(color: Color.shadowTint.opacity(0.12), radius: 8, y: 2)
 
             if let message = state.message {
                 Text(message)

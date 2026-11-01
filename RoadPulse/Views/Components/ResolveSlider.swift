@@ -63,7 +63,7 @@ struct ResolveSlider: View {
             .overlay(
                 Image(systemName: isResolved ? "checkmark" : "chevron.right.2")
                     .font(.headline)
-                    .foregroundStyle(isResolved ? Color.white : Color.ink)
+                    .foregroundStyle(isResolved ? Color.onFill : Color.ink)
                     .environment(\.colorScheme, .light) // dark ink on yellow in both appearances
                     .contentTransition(.symbolEffect(.replace))
             )

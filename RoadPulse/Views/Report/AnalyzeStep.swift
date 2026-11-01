@@ -39,7 +39,7 @@ struct AnalyzeStep: View {
                     .accessibilityLabel("Your photo")
             }
             if viewModel.analysis == .analyzing {
-                Color.black.opacity(0.15)
+                Color.shadowTint.opacity(0.15)
                 ScanLine()
                     .transition(.opacity)
             }
@@ -114,7 +114,7 @@ struct AnalyzeStep: View {
     private func failedOutcome(_ message: String) -> some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 36))
+                .font(.largeTitle)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Severity.high.color)
             Text(message)

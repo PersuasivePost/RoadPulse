@@ -15,7 +15,7 @@ struct CardStyle: ViewModifier {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .stroke(Color.inkMuted.opacity(0.12), lineWidth: 1)
                 )
-                .shadow(color: colorScheme == .light ? Color.black.opacity(0.08) : .clear, radius: 12, y: 4)
+                .shadow(color: colorScheme == .light ? Color.shadowTint.opacity(0.08) : .clear, radius: 12, y: 4)
         )
     }
 }

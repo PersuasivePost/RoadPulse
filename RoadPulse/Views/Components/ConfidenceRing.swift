@@ -20,6 +20,7 @@ struct ConfidenceRing: View {
             RingShape(trim: shown)
                 .stroke(color, style: StrokeStyle(lineWidth: 14, lineCap: .round))
             CountingPercent(value: shown * 100)
+                // Fixed size on purpose: the number must fit inside the fixed 160 pt ring.
                 .font(.system(size: 44, weight: .heavy, design: .rounded))
                 .foregroundStyle(Color.ink)
         }

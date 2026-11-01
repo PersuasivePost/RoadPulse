@@ -108,10 +108,10 @@ struct MapScreen: View {
                 .overlay(alignment: .topTrailing) {
                     if drive.isRunning {
                         Circle().fill(Severity.severe.color).frame(width: 14, height: 14)
-                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                            .overlay(Circle().stroke(Color.onFill, lineWidth: 2))
                     }
                 }
-                .shadow(color: Color.black.opacity(0.2), radius: 8, y: 3)
+                .shadow(color: Color.shadowTint.opacity(0.2), radius: 8, y: 3)
         }
         .buttonStyle(PressScaleButtonStyle())
         .accessibilityLabel("Drive Mode")
@@ -130,7 +130,7 @@ struct MapScreen: View {
                 .frame(width: 44, height: 44)
                 .background(Circle().fill(Color.surfaceRaised))
                 .overlay(Circle().stroke(Color.inkMuted.opacity(0.12), lineWidth: 1))
-                .shadow(color: Color.black.opacity(0.12), radius: 6, y: 2)
+                .shadow(color: Color.shadowTint.opacity(0.12), radius: 6, y: 2)
         }
         .buttonStyle(PressScaleButtonStyle())
         .accessibilityLabel("Map style")

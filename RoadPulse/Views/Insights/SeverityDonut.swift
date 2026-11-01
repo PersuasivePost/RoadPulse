@@ -83,6 +83,10 @@ struct SeverityDonut: View {
             }
         )
         .animation(reduceMotion ? nil : Motion.snappy, value: selected)
+        // VoiceOver reads one summary; the legend rows beside it are the tappable controls.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Reports by severity")
+        .accessibilityValue(counts.reversed().map { "\($0.severity.label) \($0.count)" }.joined(separator: ", "))
     }
 
     private var centre: some View {

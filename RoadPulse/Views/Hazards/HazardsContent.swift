@@ -197,7 +197,7 @@ struct HazardsContent: View {
                         .frame(width: 44, height: 44)
                         .background(Circle().fill(Color.laneYellow))
                         .environment(\.colorScheme, .light) // dark ink on yellow in both appearances
-                        .shadow(color: Color.black.opacity(0.2), radius: 6, y: 2)
+                        .shadow(color: Color.shadowTint.opacity(0.2), radius: 6, y: 2)
                 }
                 .buttonStyle(PressScaleButtonStyle())
                 .padding(16)
