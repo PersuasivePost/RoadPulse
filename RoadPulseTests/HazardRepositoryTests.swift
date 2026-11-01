@@ -14,9 +14,10 @@ final class HazardRepositoryTests: XCTestCase {
         draft.rainfallMM = 123.5
         draft.photo = Data([0x1, 0x2, 0x3])
 
-        let created = try repo.create(draft)
+        // Capture the id first: reset() invalidates `created`, and reading it afterwards traps.
+        let id = try repo.create(draft).id
         store.viewContext.reset() // force a real read back from the store
-        let fetched = try XCTUnwrap(repo.hazard(id: created.id))
+        let fetched = try XCTUnwrap(repo.hazard(id: id))
 
         XCTAssertEqual(fetched.hazardType, .crack)
         XCTAssertEqual(fetched.severityLevel, .high)
@@ -33,9 +34,9 @@ final class HazardRepositoryTests: XCTestCase {
     func testUnknownRainfallStaysNil() throws {
         let store = TestStore.make()
         let repo = HazardRepository(persistence: store)
-        let created = try repo.create(TestStore.draft())
+        let id = try repo.create(TestStore.draft()).id
         store.viewContext.reset()
-        XCTAssertNil(try XCTUnwrap(repo.hazard(id: created.id)).rainfall)
+        XCTAssertNil(try XCTUnwrap(repo.hazard(id: id)).rainfall)
     }
 
     func testAreaIsReusedCaseInsensitively() throws {
