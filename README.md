@@ -115,6 +115,7 @@ Added after the final run-through on the Mac: map, report flow, hazards (list an
 | [docs/DESIGN.md](docs/DESIGN.md) | Colours, type, spacing, motion, components |
 | [docs/SYLLABUS_MAP.md](docs/SYLLABUS_MAP.md) | Every syllabus concept → the file that demonstrates it (checked by `DocsAuditTests`) |
 | [docs/PROGRESS.md](docs/PROGRESS.md) | What was done, in order, with notes |
+| [docs/MAC_SETUP_AND_DEMO.md](docs/MAC_SETUP_AND_DEMO.md) | Opening the project on a Mac, simulator checklist, running on an iPhone, demo script |
 
 ## Tests
 
