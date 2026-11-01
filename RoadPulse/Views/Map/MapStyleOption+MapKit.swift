@@ -1,4 +1,5 @@
 import MapKit
+import SwiftUI // `MapStyle` comes from MapKit's SwiftUI overlay, which needs both imports
 
 // MARK: - Settings value → MapKit style
 
