@@ -5,7 +5,7 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 ## Plan
 | Task | Spec | Target date | Status |
 |---|---|---|---|
-| F0 Setup & CI | PRD#F0 | 29 Oct | ☐ |
+| F0 Setup & CI | PRD#F0 | 29 Oct | ◐ code done, awaiting green CI |
 | F1 ML model | PRD#F1 | 29 Oct | ☐ |
 | F2 Core Data | PRD#F2 | 30 Oct | ☐ |
 | F3 Shell, state, onboarding, settings | PRD#F3 | 30 Oct | ☐ |
@@ -21,6 +21,7 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 | Buffer + submission | | 4 Nov | ☐ |
 
 ## Log
+- 1 Nov: F0 written: `project.yml`, `.github/workflows/ios.yml`, folder skeleton, placeholder app (`RootTabView`), `Color+Tokens` + 12 colour sets + AccentColor, `Motion` tokens, `DesignTokenTests`. Not yet compiled: push and confirm CI is green before ticking F0.
 
 
 ## Blockers / notes

@@ -4,7 +4,7 @@ Fill the "Where" column with `File.swift → type/function` as each concept is i
 
 | Module | Concept | Where in RoadPulse | Status |
 |---|---|---|---|
-| 1.1 | `@main`, App & Scene protocols, `body` | App/RoadPulseApp.swift | ☐ |
+| 1.1 | `@main`, App & Scene protocols, `body` | App/RoadPulseApp.swift → `RoadPulseApp` (WindowGroup, placeholder) | ◐ |
 | 1.2 | HStack / VStack / ZStack | | ☐ |
 | 1.2 | Lists & navigation | | ☐ |
 | 1.2 | View modifiers (custom ViewModifier) | Components/CardStyle | ☐ |
