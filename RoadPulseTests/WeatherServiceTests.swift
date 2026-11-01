@@ -174,11 +174,20 @@ final class WeatherServiceTests: XCTestCase {
 
 @MainActor
 final class RainfallViewModelTests: XCTestCase {
+    /// Managed objects only stay live while their store does, so the test keeps it alive.
+    private var store: PersistenceController?
+
     private func makeHazard(rainfall: Double? = nil) throws -> (PersistenceController, Hazard) {
         var draft = TestStore.draft()
         draft.rainfallMM = rainfall
         let store = TestStore.make()
+        self.store = store
         return (store, try HazardRepository(persistence: store).create(draft))
+    }
+
+    override func tearDown() {
+        store = nil
+        super.tearDown()
     }
 
     private func wait(until condition: () -> Bool) async {
