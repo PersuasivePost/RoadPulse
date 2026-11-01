@@ -12,11 +12,11 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 | F4 Map | PRD#F4 | 31 Oct | ✅ |
 | 🖥 Mac visit 1: run on simulator, test map + GPX | | 31 Oct | ☐ |
 | F5 AI report flow | PRD#F5 | 1 Nov | ✅ |
-| F6 Hazards list & gallery | PRD#F6 | 2 Nov | ◐ code + tests written, awaiting CI |
-| F7 Weather API | PRD#F7 | 2 Nov | ◐ code + tests written, awaiting CI |
+| F6 Hazards list & gallery | PRD#F6 | 2 Nov | ✅ |
+| F7 Weather API | PRD#F7 | 2 Nov | ✅ |
 | 🖥 Mac visit 2: test report flow, gestures, API | | 2 Nov | ☐ |
-| F8 Insights & Drive Mode | PRD#F8 | 3 Nov | ☐ |
-| F9 Polish & docs | PRD#F9 | 3 Nov | ☐ |
+| F8 Insights & Drive Mode | PRD#F8 | 3 Nov | ◐ code + tests written, awaiting CI |
+| F9 Polish & docs | PRD#F9 | 3 Nov | ◐ code + docs written, awaiting CI (screenshots after Mac visit 3) |
 | 🖥 Mac visit 3: full run-through, screenshots, demo video | | 3 Nov | ☐ |
 | Buffer + submission | | 4 Nov | ☐ |
 
@@ -32,6 +32,8 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 - 1 Nov: F5 re-checked on Linux (no Mac, nothing pushed yet). All 99 Swift files pass `swiftc -parse` (Swift 5.10 in Docker). 13 platform-independent sources (Severity, ClassificationResult, RiskLevel, PlaceDetails, LandmarkPicker, ReportStep, UnitSystem, MapStyleOption, HazardType/Status, AppTab, RoadGeometry) compiled and ran 45 assertions mirroring the XCTests, all passing. Core ML spec confirmed: `classify` op with labels normal/pothole, 224×224 RGB `image` input. The F1 CI log confirms Xcode 16.4 compiles it to `RoadClassifier.mlmodelc`. Fixed a race where a late classifier result could overwrite a newly picked photo, and added a test for it. SwiftUI/UIKit/CoreData code still needs CI to type-check.
 - 1 Nov: F3, F4, F5 ticked: CI green on main (run 41305354980). F6 written: `HazardsScreen` (`NavigationStack`, `.searchable`, List/Gallery segmented toggle, sort menu, shared `FilterChips`), `HazardsContent` (`SectionedFetchRequest` by Area, `List` with leading resolve / trailing delete swipes, `contextMenu` + preview, `LazyVGrid` gallery, `refreshable`, `ScrollViewReader` jump-to-top button + `SeverityIndexStrip`), one `matchedGeometryEffect` id per hazard morphing list ↔ grid ↔ `HazardDetail` hero overlay (pinch/pan/double-tap `ZoomableImage`, edit form + Update, `ShareLink`), custom `ResolveSlider` (`DragGesture`, 80% threshold, spring back), `EmptyState`, `ThumbnailCache`. Tests: gesture maths, edit/apply, grouped request order, index strip, share text, view model actions. Not yet compiled: push and run /ci.
 - 1 Nov: F7 written: `WeatherService` (Open-Meteo, last 7 days; `async` method + Combine `dataTaskPublisher` variant sharing one `parse`), `WeatherResponse` (Codable, `convertFromSnakeCase`, null days skipped), `WeatherError`, `RainfallViewModel` (Combine sink → store `rainfallMM`; loading / loaded / failed + Retry; `cancel()` on disappear), `RainfallRow` in map sheet and hazard detail (risk badge updates from the stored value), pull-to-refresh backfills up to 10 missing hazards (async). Tests: `URLProtocol` stub + JSON fixture, errors, publisher, view model, backfill. F6 is still ◐: the last CI run predates it, so push and run /ci.
+- 1 Nov: F6 and F7 ticked (CI green, run 41318224760). F8 written. Insights: `InsightsStats` (per-Area counts, severity counts, worst roads = Σ severity/(1+km)), `StatCard` + `CountingNumber`, hand-drawn `BarChart` (`BarShape`, staggered springs), `SeverityDonut` (`DonutSliceShape` with `AnimatablePair`, `SpatialTapGesture` hit-test via `DonutGeometry`), `WorstRoadsList`. Drive: `MotionService` (CoreMotion 50 Hz) / `ReplayMotionService` (bundled `sample_drive.csv`, 90 s along the commute route), `SpikeDetector` (0.5 s rolling RMS), `DriveViewModel`, `TripRepository`, `HoldToStartButton` (long-press + ring), `WaveformView`, `DriveSheet`, yellow FAB on the Map, coloured `MapPolyline`/`MapCircle` trail. Tests: stats, donut maths, shapes, detector, CSV, trips, view model, replay. Not yet compiled: push and run /ci.
+- 1 Nov: F9 written: real AppIcon (1024 px: road, lane dashes, pulsing pothole), Reduce Motion fixes (filter chips, search bar, permission line, confirm step, symbol bounces), Dynamic Type (`@ScaledMetric` thumbnail, scalable symbols), `layoutPriority` + `alignmentGuide` rows, tab-switch haptic (respects Settings), README (features, Mermaid, ML results, GPX), SYLLABUS_MAP fully ✅. `DocsAuditTests` fails if a syllabus row isn't ✅ or names a missing file, or the icon is missing. F8 and F9 are both uncompiled: push and run /ci.
 
 ## Blockers / notes
 <!-- e.g. lab Mac Xcode version, simulator issues -->
@@ -52,3 +54,8 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 - F7: rainfall = sum of Open-Meteo `precipitation_sum` for `past_days=6` + today (7 days). Demo hazards already have rainfall; new reports fetch it when opened. Test with Airplane Mode for the error + Retry state on Mac visit 2.
 - F6: the detail is an in-screen overlay rather than a pushed screen, because `matchedGeometryEffect` can't span a `NavigationStack` push on iOS 17. Check the hero morph and the jump-to-top button (first-row `onAppear` tracking) on the Mac.
 - F6: `SectionedFetchRequest` uses the `@objc` `Hazard.areaSectionName` ("Unassigned" when no Area) while sorting on `area.name`; if sections look split on the Mac, check that sort/section pairing first.
+- F8: the replay CSV carries its own lat/lon (the GPX isn't copied into the app bundle), so the trail appears around Kalyan–Dombivli without Simulate Location. Live drives use `LocationManager`'s latest fix (10 m distance filter), so a short rough patch on a real drive may be drawn as a dot.
+- F8: rough patches in the replay are tuned for the default 0.35 g threshold; raise the Settings slider to see fewer spots.
+- F8: Drive Mode measures acceleration along gravity (not raw `userAcceleration.z`), so the phone can sit upright in a holder. The Drive sheet has no background interaction, so pins can't be tapped while it's open.
+- F8 / Mac visit 2: check the hold-to-start ring (real device only, since the simulator has no motion sensors) and that the trail draws when a replay finishes.
+- F9: README screenshots are a placeholder section; add them (and the demo video) on Mac visit 3. `PlaceholderScreen.swift` is no longer used by any tab and can be deleted if the audit flags it.

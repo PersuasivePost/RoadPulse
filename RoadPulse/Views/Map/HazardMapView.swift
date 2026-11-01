@@ -8,6 +8,9 @@ import SwiftUI
 struct HazardMapView: View {
     // @FetchRequest: live, filtered hazards straight from Core Data
     @FetchRequest private var hazards: FetchedResults<Hazard>
+    // @FetchRequest: rough stretches recorded by Drive Mode, drawn as a coloured trail
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: true)])
+    private var roughSegments: FetchedResults<RoughSegment>
     // @Binding: the screen owns the camera and the selection; the map reads and writes them
     @Binding var position: MapCameraPosition
     @Binding var selection: UUID?
@@ -26,6 +29,15 @@ struct HazardMapView: View {
     var body: some View {
         Map(position: $position, selection: $selection) {
             UserAnnotation()
+            ForEach(roughSegments, id: \.objectID) { segment in
+                if segment.lengthMeters < 5 {
+                    MapCircle(center: segment.coordinates[0], radius: 6)
+                        .foregroundStyle(segment.level.color)
+                } else {
+                    MapPolyline(coordinates: segment.coordinates)
+                        .stroke(segment.level.color, lineWidth: 6)
+                }
+            }
             ForEach(hazards) { hazard in
                 Annotation(hazard.landmark ?? hazard.hazardType.label,
                            coordinate: hazard.coordinate,

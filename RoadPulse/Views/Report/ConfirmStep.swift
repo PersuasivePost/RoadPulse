@@ -7,6 +7,8 @@ struct ConfirmStep: View {
     @EnvironmentObject private var viewModel: ReportViewModel
     /// Called with the new hazard's id once the success animation has played.
     let onFinished: (UUID) -> Void
+    // @Environment: animations are skipped when Reduce Motion is on
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var isSaved: Bool {
         if case .saved = viewModel.saveState { return true }
@@ -18,13 +20,13 @@ struct ConfirmStep: View {
             Color.asphalt.ignoresSafeArea()
             if isSaved {
                 success
-                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))
             } else {
                 summary
                     .transition(.opacity)
             }
         }
-        .animation(Motion.smooth, value: isSaved)
+        .animation(reduceMotion ? .easeOut(duration: 0.2) : Motion.smooth, value: isSaved)
         .reportChrome(step: .confirm, title: "Confirm")
         .onChange(of: viewModel.saveState) { _, state in
             guard case .saved(let id) = state else { return }

@@ -3,6 +3,8 @@ import SwiftUI
 // MARK: - List row
 
 struct HazardRow: View {
+    // @ScaledMetric: the thumbnail grows with Dynamic Type, like the text beside it
+    @ScaledMetric(relativeTo: .body) private var thumbnailSize: CGFloat = 64
     @ObservedObject var hazard: Hazard
     let namespace: Namespace.ID
     let isHeroSource: Bool
@@ -15,13 +17,14 @@ struct HazardRow: View {
         } label: {
             HStack(spacing: 12) {
                 HazardThumbnail(hazard: hazard, namespace: namespace, isSource: isHeroSource)
-                    .frame(width: 64, height: 64)
+                    .frame(width: thumbnailSize, height: thumbnailSize)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(hazard.displayTitle)
                         .font(.headline)
                         .fontDesign(.rounded)
                         .foregroundStyle(hazard.isFixed ? Color.inkMuted : Color.ink)
                         .lineLimit(1)
+                        .layoutPriority(1) // when space runs out the address truncates, not the title
                     Text(hazard.address ?? hazard.hazardType.label)
                         .font(.caption)
                         .foregroundStyle(Color.inkMuted)

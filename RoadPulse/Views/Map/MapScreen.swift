@@ -15,11 +15,16 @@ struct MapScreen: View {
     // @State: the camera is local UI state; the map and search both move it
     @State private var position: MapCameraPosition = .region(MapCamera.mumbaiRegion)
     @State private var isDeniedBannerDismissed = false
+    // @StateObject: the map tab owns the drive, so it keeps running when the sheet is closed
+    @StateObject private var drive: DriveViewModel
+    // @State: whether the Drive Mode sheet is showing
+    @State private var isDriveSheetPresented = false
     // @Environment: camera moves are skipped when Reduce Motion is on
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     init(persistence: PersistenceController) {
         _viewModel = StateObject(wrappedValue: MapViewModel(persistence: persistence))
+        _drive = StateObject(wrappedValue: DriveViewModel(persistence: persistence))
     }
 
     // MARK: Body
@@ -32,9 +37,14 @@ struct MapScreen: View {
             .ignoresSafeArea(edges: .bottom)
             .safeAreaInset(edge: .top, spacing: 0) { topBar }
             .safeAreaInset(edge: .bottom, spacing: 0) { deniedBanner }
-            .overlay(alignment: .bottomTrailing) { styleButton }
+            .overlay(alignment: .bottomTrailing) { floatingButtons }
             .sheet(isPresented: sheetBinding) { sheetContent }
-            .onAppear { focusSelectedHazard(haptic: false) } // e.g. arriving from a saved report
+            .onAppear {
+                focusSelectedHazard(haptic: false) // e.g. arriving from a saved report
+                let manager = location
+                drive.locationProvider = { [weak manager] in manager?.location.map { GeoPoint($0.coordinate) } }
+            }
+            .onChange(of: drive.isRunning) { _, running in appState.isDriveActive = running }
             .onChange(of: viewModel.searchResult) { _, result in
                 if let result { flyTo(MapCamera.region(showing: result)) }
             }
@@ -75,6 +85,40 @@ struct MapScreen: View {
         }
     }
 
+    private var floatingButtons: some View {
+        VStack(alignment: .trailing, spacing: 12) {
+            driveButton
+            styleButton
+        }
+        .padding(16)
+    }
+
+    /// Yellow FAB (docs/DESIGN.md); pulses a red dot while a drive is recording.
+    private var driveButton: some View {
+        Button {
+            Haptics.tap()
+            isDriveSheetPresented = true
+        } label: {
+            Image(systemName: "car.fill")
+                .font(.title3)
+                .foregroundStyle(Color.ink)
+                .environment(\.colorScheme, .light) // dark ink on yellow in both appearances
+                .frame(width: 56, height: 56)
+                .background(Circle().fill(Color.laneYellow))
+                .overlay(alignment: .topTrailing) {
+                    if drive.isRunning {
+                        Circle().fill(Severity.severe.color).frame(width: 14, height: 14)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    }
+                }
+                .shadow(color: Color.black.opacity(0.2), radius: 8, y: 3)
+        }
+        .buttonStyle(PressScaleButtonStyle())
+        .accessibilityLabel("Drive Mode")
+        .accessibilityValue(drive.isRunning ? "Recording" : "Off")
+        .sheet(isPresented: $isDriveSheetPresented) { DriveSheet(drive: drive) }
+    }
+
     private var styleButton: some View {
         Button {
             Haptics.tap()
@@ -89,7 +133,6 @@ struct MapScreen: View {
                 .shadow(color: Color.black.opacity(0.12), radius: 6, y: 2)
         }
         .buttonStyle(PressScaleButtonStyle())
-        .padding(16)
         .accessibilityLabel("Map style")
         .accessibilityValue(mapStyle.label)
         .accessibilityHint("Switches to \(mapStyle.next.label)")

@@ -123,7 +123,7 @@ struct HazardDetail: View {
                     .fill(hazard.severityLevel.color(isFixed: hazard.isFixed).opacity(0.14))
                     .overlay(
                         Image(systemName: hazard.hazardType.symbol)
-                            .font(.system(size: 56))
+                            .font(.system(.largeTitle))
                             .symbolRenderingMode(.hierarchical)
                             .foregroundStyle(hazard.severityLevel.color(isFixed: hazard.isFixed))
                     )

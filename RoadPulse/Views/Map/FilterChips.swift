@@ -6,6 +6,8 @@ import SwiftUI
 struct FilterChips: View {
     // @EnvironmentObject: the filters live in the shared AppState
     @EnvironmentObject private var appState: AppState
+    // @Environment: animations are skipped when Reduce Motion is on
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private static let severityChoices: [Severity] = [.medium, .high, .severe]
 
@@ -36,7 +38,7 @@ struct FilterChips: View {
             }
             .padding(.vertical, 2)
         }
-        .animation(Motion.snappy, value: appState.hasActiveFilters)
+        .animation(reduceMotion ? nil : Motion.snappy, value: appState.hasActiveFilters)
     }
 }
 

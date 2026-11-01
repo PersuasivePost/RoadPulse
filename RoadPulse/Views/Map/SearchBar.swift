@@ -10,6 +10,8 @@ struct SearchBar: View {
 
     // @FocusState: lets the clear button keep the keyboard up
     @FocusState private var isFocused: Bool
+    // @Environment: animations are skipped when Reduce Motion is on
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -49,7 +51,7 @@ struct SearchBar: View {
                     .transition(.opacity)
             }
         }
-        .animation(Motion.snappy, value: state)
+        .animation(reduceMotion ? nil : Motion.snappy, value: state)
     }
 
     @ViewBuilder

@@ -37,7 +37,7 @@ struct HazardPreviewCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         } else {
             Image(systemName: hazard.hazardType.symbol)
-                .font(.system(size: 40))
+                .font(.largeTitle)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(hazard.severityLevel.color(isFixed: hazard.isFixed))
                 .frame(height: 100)

@@ -53,7 +53,7 @@ Migration: `shouldMigrateStoreAutomatically` + `shouldInferMappingModelAutomatic
 - **Severity prefill:** `pothole` confidence → 1–5 (≥0.95→5, ≥0.85→4, ≥0.7→3, else 2); `normal` → 1.
 - **Monsoon risk:** `score = severity/5 * 0.6 + min(rain7d/100, 1) * 0.4` → low < 0.4 ≤ medium < 0.7 ≤ high.
 - **Worst near me:** `Σ severity / (1 + distanceKm)` per Area, top 5.
-- **Drive spikes:** rolling RMS of `userAcceleration.z` over 0.5 s; segment when RMS > threshold (Settings Slider, default 0.35 g); intensity = clamp(RMS / 1.0 g).
+- **Drive spikes:** rolling RMS over 0.5 s of vertical acceleration (`userAcceleration` projected onto `gravity`, so any phone mount works); segment when RMS > threshold (Settings Slider, default 0.35 g); intensity = clamp(RMS / 1.0 g).
 
 ## Naming
 Views end in `Screen` (tab roots), `View`, `Sheet` or `Step`; ViewModels end in `ViewModel`; services in `Service`/`Manager`. One type per file.

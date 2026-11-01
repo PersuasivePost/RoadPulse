@@ -25,6 +25,7 @@ struct RootTabView: View {
         }
         .tint(Color.laneYellow)
         .onAppear { locationManager.start() }
+        .onChange(of: selectedTab) { _, _ in Haptics.tap() }
         .onChange(of: appState.requestedTab) { _, tab in
             guard let tab else { return }
             selectedTab = tab.rawValue
@@ -48,8 +49,8 @@ struct RootTabView: View {
             ReportFlow(persistence: persistence)
         case .hazards:
             HazardsScreen(persistence: persistence)
-        default:
-            PlaceholderScreen(tab: tab)
+        case .insights:
+            InsightsScreen()
         }
     }
 

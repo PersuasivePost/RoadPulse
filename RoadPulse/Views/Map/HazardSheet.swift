@@ -82,7 +82,7 @@ struct HazardSheet: View {
                 .frame(height: 96)
                 .overlay(
                     Image(systemName: hazard.hazardType.symbol)
-                        .font(.system(size: 32))
+                        .font(.title)
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(hazard.severityLevel.color(isFixed: hazard.isFixed))
                 )

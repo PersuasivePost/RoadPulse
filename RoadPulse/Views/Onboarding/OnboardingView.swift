@@ -63,10 +63,10 @@ struct OnboardingView: View {
     private var pageContent: some View {
         VStack(spacing: 12) {
             Image(systemName: page.symbol)
-                .font(.system(size: 36))
+                .font(.largeTitle)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.laneYellow)
-                .symbolEffect(.bounce, value: pageIndex)
+                .symbolEffect(.bounce, value: reduceMotion ? 0 : pageIndex)
             Text(page.title)
                 .font(.title.bold())
                 .fontDesign(.rounded)

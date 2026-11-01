@@ -6,6 +6,8 @@ import SwiftUI
 struct PermissionStatusView: View {
     // @ObservedObject: OnboardingView owns the manager (@StateObject); this subview only watches it
     @ObservedObject var location: LocationManager
+    // @Environment: animations are skipped when Reduce Motion is on
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Label(LocationManager.describe(location.authorizationStatus),
@@ -13,7 +15,7 @@ struct PermissionStatusView: View {
             .font(.subheadline)
             .foregroundStyle(location.isAuthorized ? Color.sev1 : Color.inkMuted)
             .symbolRenderingMode(.hierarchical)
-            .animation(Motion.snappy, value: location.authorizationStatus)
+            .animation(reduceMotion ? nil : Motion.snappy, value: location.authorizationStatus)
     }
 }
 
