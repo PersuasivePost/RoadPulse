@@ -39,6 +39,30 @@ enum Severity: Int16, CaseIterable, Identifiable, Comparable {
 
     var color: Color { Color(colorToken) }
 
+    /// Resolved hazards are drawn grey regardless of severity (docs/DESIGN.md).
+    func colorToken(isFixed: Bool) -> ColorToken {
+        isFixed ? .fixedGrey : colorToken
+    }
+
+    func color(isFixed: Bool) -> Color {
+        Color(colorToken(isFixed: isFixed))
+    }
+
+    /// Suggests a severity from the classifier (docs/ARCHITECTURE.md): a confident pothole is
+    /// worse than a doubtful one; "normal" maps to the lowest level.
+    static func prefill(isPothole: Bool, confidence: Double) -> Severity {
+        guard isPothole else { return .minor }
+        switch confidence {
+        case 0.95...: return .severe
+        case 0.85...: return .high
+        case 0.7...: return .medium
+        default: return .low
+        }
+    }
+
+    /// High and severe hazards get a pulsing ring on the map.
+    var pulses: Bool { self >= .high }
+
     static func < (lhs: Severity, rhs: Severity) -> Bool {
         lhs.rawValue < rhs.rawValue
     }

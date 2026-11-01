@@ -17,17 +17,17 @@ RoadPulse/
   Models/         Core Data NSManagedObject subclasses, enums (HazardType, HazardStatus, Severity, RiskLevel)
   Persistence/    PersistenceController.swift, ModelBuilder.swift (programmatic model), DemoSeeder.swift
   Repositories/   HazardRepository.swift, TripRepository.swift
-  Services/       ClassifierService, TextRecognitionService, LocationManager, GeocodingService, WeatherService, MotionService, Haptics
+  Services/       ClassifierService, TextRecognitionService, LocationManager, GeocodingService, DirectionsLauncher, ImageProcessing, SampleImages, WeatherService, MotionService, Haptics
   ViewModels/     ReportViewModel, MapViewModel, HazardDetailViewModel, InsightsViewModel, DriveViewModel
   Views/
-    Map/          MapScreen, HazardPin, HazardSheet, SearchBar, FilterChips
-    Report/       ReportFlow, CaptureStep, AnalyzeStep, DetailsStep, ConfirmStep, CameraPicker
+    Map/          MapScreen, HazardMapView, HazardPin, HazardSheet, SearchBar, FilterChips, LocationDeniedView, MapCamera, MapStyleOption+MapKit
+    Report/       ReportFlow, CaptureStep, AnalyzeStep, DetailsStep, ConfirmStep, CameraPicker, ReportStepChrome
     Hazards/      HazardsScreen, HazardRow, HazardGrid, HazardDetail, SeverityIndexStrip
     Insights/     InsightsScreen, BarChart, SeverityDonut, StatCard, WorstRoadsList
     Drive/        DriveSheet, HoldToStartButton, WaveformView
     Settings/     SettingsScreen
     Onboarding/   OnboardingView, RoadIllustration
-    Components/   ConfidenceRing, SeverityBadge, RiskBadge, PrimaryButton, ResolveSlider, LaneDivider, EmptyState, CardStyle
+    Components/   ConfidenceRing, SeverityBadge, RiskBadge, FilterChip, StepProgress, RingShape, AnimatedCheckmark, PrimaryButton, ResolveSlider, LaneDivider, EmptyState, CardStyle
   Resources/      RoadClassifier.mlpackage, MumbaiCommute.gpx, sample_drive.csv, Assets.xcassets, SampleImages/
 RoadPulseTests/   Repository, Classifier, Weather (URLProtocol mock), Risk calculation, Motion spike detection
 ml/               train.py, convert.py, requirements.txt, REPORT.md (data/ and checkpoints/ git-ignored)

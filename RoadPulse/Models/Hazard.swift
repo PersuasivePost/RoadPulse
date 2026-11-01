@@ -71,4 +71,12 @@ final class Hazard: NSManagedObject {
     }
 
     var isFixed: Bool { hazardStatus == .fixed }
+
+    /// `nil` until rainfall has been fetched (F7).
+    var monsoonRisk: RiskLevel? {
+        rainfall.map { RiskLevel.level(severity: severityLevel, rainfallMM: $0) }
+    }
 }
+
+// `id` is a stored UUID, so `ForEach(hazards)` and Map selection work without extra keys.
+extension Hazard: Identifiable {}
