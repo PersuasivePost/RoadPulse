@@ -45,3 +45,4 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 - F5: the OCR test depends on Vision text recognition working in the CI simulator; if it fails there, fix the test setup rather than skipping it.
 - F5: without a location fix (simulator default is none) the Review button stays disabled by design. Use Debug → Simulate Location (the GPX) or Features → Location → Custom Location.
 - F5: the "Try a sample photo" and "Use sample signboard" menus are simulator-only (`#if targetEnvironment(simulator)`), so a real device never shows them.
+- F4: Xcode doesn't copy `.gpx` into the app bundle (it's a location-simulation file), so the GPX test reads it from the source tree via `#filePath`.

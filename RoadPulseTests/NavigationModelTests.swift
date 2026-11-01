@@ -1,6 +1,9 @@
+import SwiftUI
 import XCTest
 @testable import RoadPulse
 
+/// @MainActor: SwiftUI shapes are main-actor types in the iOS 18 SDK.
+@MainActor
 final class NavigationModelTests: XCTestCase {
     // MARK: Tabs
 

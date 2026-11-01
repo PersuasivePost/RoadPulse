@@ -35,10 +35,10 @@ struct HazardMapView: View {
                               isFixed: hazard.isFixed,
                               isSelected: selection == hazard.id)
                 }
+                .annotationTitles(.hidden) // a MapContent modifier: the pin shows no label under it
                 .tag(hazard.id)
             }
         }
-        .annotationTitles(.hidden)
         .mapStyle(style.mapStyle)
         .mapControls {
             MapUserLocationButton()

@@ -123,9 +123,9 @@ struct OnboardingView: View {
     private func go(to newIndex: Int) {
         guard pages.indices.contains(newIndex), newIndex != pageIndex else { return }
         // A removal transition is the one the outgoing view already had, so the direction is
-        // set first and the page change is applied on the next run-loop turn.
+        // set first and the page change is applied in a follow-up main-actor task.
         movingForward = newIndex > pageIndex
-        DispatchQueue.main.async {
+        Task { @MainActor in
             withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : Motion.smooth) {
                 pageIndex = newIndex
             }

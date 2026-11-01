@@ -90,9 +90,13 @@ final class MapSupportTests: XCTestCase {
 
     // MARK: GPX route
 
-    func testBundledGPXRunsFromKalyanToGhatkopar() throws {
-        let url = try XCTUnwrap(Bundle.main.url(forResource: "MumbaiCommute", withExtension: "gpx"),
-                                "MumbaiCommute.gpx is missing from the app bundle")
+    func testCommuteGPXRunsFromKalyanToGhatkopar() throws {
+        // Xcode keeps GPX files for location simulation and doesn't copy them into the app, so the
+        // test reads the source file (simulator tests can read the Mac's file system).
+        let url = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("RoadPulse/Resources/MumbaiCommute.gpx")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path), "missing: \(url.path)")
         let parser = XMLParser(contentsOf: url)
         let collector = WaypointCollector()
         parser?.delegate = collector

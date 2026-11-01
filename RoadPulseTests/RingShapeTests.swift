@@ -2,6 +2,8 @@ import SwiftUI
 import XCTest
 @testable import RoadPulse
 
+/// @MainActor: SwiftUI shapes are main-actor types in the iOS 18 SDK.
+@MainActor
 final class RingShapeTests: XCTestCase {
     private let rect = CGRect(x: 0, y: 0, width: 100, height: 100)
 
