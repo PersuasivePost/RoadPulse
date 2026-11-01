@@ -8,12 +8,12 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 | F0 Setup & CI | PRD#F0 | 29 Oct | ✅ |
 | F1 ML model | PRD#F1 | 29 Oct | ✅ |
 | F2 Core Data | PRD#F2 | 30 Oct | ✅ |
-| F3 Shell, state, onboarding, settings | PRD#F3 | 30 Oct | ◐ code + tests written, awaiting CI |
-| F4 Map | PRD#F4 | 31 Oct | ◐ code + tests written, awaiting CI |
+| F3 Shell, state, onboarding, settings | PRD#F3 | 30 Oct | ✅ |
+| F4 Map | PRD#F4 | 31 Oct | ✅ |
 | 🖥 Mac visit 1: run on simulator, test map + GPX | | 31 Oct | ☐ |
-| F5 AI report flow | PRD#F5 | 1 Nov | ◐ code + tests written, awaiting CI |
-| F6 Hazards list & gallery | PRD#F6 | 2 Nov | ☐ |
-| F7 Weather API | PRD#F7 | 2 Nov | ☐ |
+| F5 AI report flow | PRD#F5 | 1 Nov | ✅ |
+| F6 Hazards list & gallery | PRD#F6 | 2 Nov | ◐ code + tests written, awaiting CI |
+| F7 Weather API | PRD#F7 | 2 Nov | ◐ code + tests written, awaiting CI |
 | 🖥 Mac visit 2: test report flow, gestures, API | | 2 Nov | ☐ |
 | F8 Insights & Drive Mode | PRD#F8 | 3 Nov | ☐ |
 | F9 Polish & docs | PRD#F9 | 3 Nov | ☐ |
@@ -30,6 +30,8 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 - 1 Nov: F4 written: `MapScreen` (iOS 17 `Map`, `MapCameraPosition`, `UserAnnotation`, `MapControls`, style button, search + filter chips as top inset), `HazardMapView` (`@FetchRequest` rebuilt from `AppState.query`), `HazardPin` (severity colour, grey when fixed, spring scale + yellow ring when selected, pulse for severity 4+), `HazardSheet` (`presentationDetents`; photo, severity/risk badges, address, directions via `MKMapItem.openInMaps`, mark fixed/reopen, delete with confirmation), `SearchBar` + `MapViewModel` (Combine debounce → `CLGeocoder.geocodeAddressString`, camera flies to result), `FilterChips`, `LocationDeniedView` (Open Settings), live-updating `LocationManager`, `RiskLevel` (monsoon formula, F7 will feed it real rainfall), `MumbaiCommute.gpx` (151 waypoints, 3 s apart). Tests: risk formula, search view model (debounce, short query, not found, network error, submit), toggle/delete actions, pin rules, filter chips, camera maths, GPX contents. Not yet compiled. F3 was still uncommitted when F4 was written, so push both and run /ci once.
 - 1 Nov: F5 written: `ReportFlow` (`NavigationStack` + `NavigationPath`: Capture → Analyze → Details → Confirm, custom back/Cancel toolbar and four-dash progress), `CaptureStep` (`PhotosPicker`, `CameraPicker` hidden without a camera, simulator-only sample photos), `ClassifierService` (`VNCoreMLRequest` on a detached task, `.scaleFill`), `AnalyzeStep` (scan line, `ConfidenceRing` with animatable `RingShape` + counting number, "No hazard detected" + report-anyway), `DetailsStep` (severity prefilled from confidence, type, notes with `@FocusState`, fixed toggle, reverse-geocoded address + Area, signboard OCR → landmark), `ConfirmStep` (background save, checkmark draw-on, haptic, pop to root, jump to the pin on the map via `AppState.showOnMap`). `LocationManager` is now one shared instance in the environment. Six held-out photos in `Resources/SampleImages` (never in training; 0.95+ confidence under PyTorch) feed `ClassifierServiceTests`; a generated signboard feeds the OCR test. Not yet compiled; F3, F4 and F5 are all unverified, so push and run /ci.
 - 1 Nov: F5 re-checked on Linux (no Mac, nothing pushed yet). All 99 Swift files pass `swiftc -parse` (Swift 5.10 in Docker). 13 platform-independent sources (Severity, ClassificationResult, RiskLevel, PlaceDetails, LandmarkPicker, ReportStep, UnitSystem, MapStyleOption, HazardType/Status, AppTab, RoadGeometry) compiled and ran 45 assertions mirroring the XCTests, all passing. Core ML spec confirmed: `classify` op with labels normal/pothole, 224×224 RGB `image` input. The F1 CI log confirms Xcode 16.4 compiles it to `RoadClassifier.mlmodelc`. Fixed a race where a late classifier result could overwrite a newly picked photo, and added a test for it. SwiftUI/UIKit/CoreData code still needs CI to type-check.
+- 1 Nov: F3, F4, F5 ticked: CI green on main (run 41305354980). F6 written: `HazardsScreen` (`NavigationStack`, `.searchable`, List/Gallery segmented toggle, sort menu, shared `FilterChips`), `HazardsContent` (`SectionedFetchRequest` by Area, `List` with leading resolve / trailing delete swipes, `contextMenu` + preview, `LazyVGrid` gallery, `refreshable`, `ScrollViewReader` jump-to-top button + `SeverityIndexStrip`), one `matchedGeometryEffect` id per hazard morphing list ↔ grid ↔ `HazardDetail` hero overlay (pinch/pan/double-tap `ZoomableImage`, edit form + Update, `ShareLink`), custom `ResolveSlider` (`DragGesture`, 80% threshold, spring back), `EmptyState`, `ThumbnailCache`. Tests: gesture maths, edit/apply, grouped request order, index strip, share text, view model actions. Not yet compiled: push and run /ci.
+- 1 Nov: F7 written: `WeatherService` (Open-Meteo, last 7 days; `async` method + Combine `dataTaskPublisher` variant sharing one `parse`), `WeatherResponse` (Codable, `convertFromSnakeCase`, null days skipped), `WeatherError`, `RainfallViewModel` (Combine sink → store `rainfallMM`; loading / loaded / failed + Retry; `cancel()` on disappear), `RainfallRow` in map sheet and hazard detail (risk badge updates from the stored value), pull-to-refresh backfills up to 10 missing hazards (async). Tests: `URLProtocol` stub + JSON fixture, errors, publisher, view model, backfill. F6 is still ◐: the last CI run predates it, so push and run /ci.
 
 ## Blockers / notes
 <!-- e.g. lab Mac Xcode version, simulator issues -->
@@ -46,3 +48,7 @@ Update at the end of every task: tick items, add a dated line to the log, note b
 - F5: without a location fix (simulator default is none) the Review button stays disabled by design. Use Debug → Simulate Location (the GPX) or Features → Location → Custom Location.
 - F5: the "Try a sample photo" and "Use sample signboard" menus are simulator-only (`#if targetEnvironment(simulator)`), so a real device never shows them.
 - F4: Xcode doesn't copy `.gpx` into the app bundle (it's a location-simulation file), so the GPX test reads it from the source tree via `#filePath`.
+- F6/F7: pull-to-refresh re-reads Core Data, then fetches rainfall for hazards without it (max 10 per pull).
+- F7: rainfall = sum of Open-Meteo `precipitation_sum` for `past_days=6` + today (7 days). Demo hazards already have rainfall; new reports fetch it when opened. Test with Airplane Mode for the error + Retry state on Mac visit 2.
+- F6: the detail is an in-screen overlay rather than a pushed screen, because `matchedGeometryEffect` can't span a `NavigationStack` push on iOS 17. Check the hero morph and the jump-to-top button (first-row `onAppear` tracking) on the Mac.
+- F6: `SectionedFetchRequest` uses the `@objc` `Hazard.areaSectionName` ("Unassigned" when no Area) while sorting on `area.name`; if sections look split on the Mac, check that sort/section pairing first.

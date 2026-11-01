@@ -73,3 +73,15 @@ struct HazardQuery: Equatable {
         return request
     }
 }
+
+// MARK: - Grouped by area (Hazards tab)
+
+extension HazardQuery {
+    /// Same filters, but ordered by Area name first so `SectionedFetchRequest` gets contiguous
+    /// sections; the query's own sort applies inside each section.
+    func groupedByAreaRequest() -> NSFetchRequest<Hazard> {
+        let request = fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "area.name", ascending: true)] + sortDescriptors
+        return request
+    }
+}

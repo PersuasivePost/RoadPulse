@@ -11,6 +11,7 @@ enum SettingsKey {
     static let driveThresholdG = "driveThresholdG"
     static let units = "units"
     static let hasCompletedOnboarding = "hasCompletedOnboarding"
+    static let hazardsLayout = "hazardsLayout"
     /// `@SceneStorage` key: per-scene, restored with the scene (not a user setting).
     static let selectedTab = "selectedTab"
 

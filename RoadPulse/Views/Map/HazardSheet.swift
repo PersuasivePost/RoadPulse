@@ -8,6 +8,8 @@ struct HazardSheet: View {
     let onToggleFixed: () -> Void
     let onDelete: () -> Void
 
+    // @StateObject: this view owns the rainfall request (Combine) for its hazard
+    @StateObject private var rainfall = RainfallViewModel()
     // @AppStorage: rainfall is shown in the user's chosen units
     @AppStorage(SettingsKey.units) private var units: UnitSystem = SettingsKey.Default.units
     // @State: whether the destructive confirmation is showing
@@ -36,6 +38,7 @@ struct HazardSheet: View {
                 photo
                 header
                 badges
+                RainfallRow(state: rainfall.state, units: units) { rainfall.retry(for: hazard) }
                 if let address = hazard.address {
                     Label(address, systemImage: "mappin.and.ellipse")
                         .font(.subheadline)
@@ -51,6 +54,8 @@ struct HazardSheet: View {
             }
             .padding(16)
         }
+        .task(id: hazard.id) { rainfall.load(for: hazard) }
+        .onDisappear { rainfall.cancel() } // drop an in-flight request
         .confirmationDialog("Delete this report?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete report", role: .destructive, action: onDelete)
             Button("Cancel", role: .cancel) {}
@@ -116,11 +121,6 @@ struct HazardSheet: View {
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(Color.fixedGrey)
         }
-        if let rain = hazard.rainfall {
-            Label("\(units.rainfall(mm: rain)) in 7 days", systemImage: "drop")
-                .font(.caption)
-                .foregroundStyle(Color.inkMuted)
-        }
     }
 
     private var actions: some View {
@@ -145,7 +145,7 @@ struct HazardSheet: View {
 
 // MARK: - Secondary action button
 
-private struct SheetActionButton: View {
+struct SheetActionButton: View {
     let title: String
     let systemImage: String
     var isDestructive = false

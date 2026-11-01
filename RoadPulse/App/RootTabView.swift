@@ -46,6 +46,8 @@ struct RootTabView: View {
             MapScreen(persistence: persistence)
         case .report:
             ReportFlow(persistence: persistence)
+        case .hazards:
+            HazardsScreen(persistence: persistence)
         default:
             PlaceholderScreen(tab: tab)
         }
