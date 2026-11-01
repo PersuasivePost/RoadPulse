@@ -34,7 +34,7 @@ extension Color {
 
     static let fixedGrey = Color(ColorToken.fixedGrey)
 
-    private init(_ token: ColorToken) {
+    init(_ token: ColorToken) {
         self.init(token.rawValue)
     }
 }

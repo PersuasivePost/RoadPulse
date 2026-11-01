@@ -25,10 +25,10 @@ Fill the "Where" column with `File.swift → type/function` as each concept is i
 | 3.3 | Implicit / explicit animations, transitions | | ☐ |
 | 4.1 | URLSession, JSON → Codable | Services/WeatherService | ☐ |
 | 4.1 | Async fetching with Combine | | ☐ |
-| 4.2 | Core Data model, entity relationships, context | Persistence/ | ☐ |
-| 4.2 | `@FetchRequest` + `NSPredicate` | | ☐ |
-| 4.2 | CRUD | Repositories/HazardRepository | ☐ |
-| 4.2 | Migration & concurrency | | ☐ |
+| 4.2 | Core Data model, entity relationships, context | Persistence/ModelBuilder.swift → `makeModel()`, `link(...)` (Area↔Hazard, Trip↔RoughSegment); PersistenceController.swift → `viewContext` | ✅ |
+| 4.2 | `@FetchRequest` + `NSPredicate` | Repositories/HazardQuery.swift → `predicate` (NSCompoundPredicate); `@FetchRequest` comes in F6 | ◐ |
+| 4.2 | CRUD | Repositories/HazardRepository.swift → `create`, `fetch`, `update`, `delete` | ✅ |
+| 4.2 | Migration & concurrency | PersistenceController.swift → lightweight-migration flags, `performBackgroundTask`, `automaticallyMergesChangesFromParent`; HazardRepository.swift → `createInBackground` | ✅ |
 | 5.1 | Map view in SwiftUI | Map/MapScreen | ☐ |
 | 5.1 | CLLocationManager & privacy permissions | Services/LocationManager | ☐ |
 | 5.2 | Custom annotations / pins | Map/HazardPin | ☐ |

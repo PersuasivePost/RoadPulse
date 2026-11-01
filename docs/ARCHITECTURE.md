@@ -38,7 +38,7 @@ docs/             PRD, ARCHITECTURE, DESIGN, PROGRESS, SYLLABUS_MAP
 | Entity | Attributes | Relationships |
 |---|---|---|
 | **Area** | name: String, city: String, ward: String?, latitude: Double, longitude: Double | hazards ↔ Hazard (to-many, cascade) |
-| **Hazard** | id: UUID, type: String, severity: Int16 (1–5), confidence: Double, status: String (open/fixed), notes: String?, landmark: String?, photo: Binary (external storage), latitude: Double, longitude: Double, address: String?, rainfallMM: Double (optional, NaN = unknown), createdAt: Date, updatedAt: Date | area ↔ Area (to-one, nullify) |
+| **Hazard** | id: UUID, type: String, severity: Int16 (1–5), confidence: Double, status: String (open/fixed), notes: String?, landmark: String?, photo: Binary (external storage), latitude: Double, longitude: Double, address: String?, rainfallMM: Double (optional, nil = unknown; not NaN, because SQLite stores NaN as NULL), createdAt: Date, updatedAt: Date | area ↔ Area (to-one, nullify) |
 | **Trip** | id: UUID, startedAt: Date, endedAt: Date?, distanceMeters: Double | roughSegments ↔ RoughSegment (to-many, cascade) |
 | **RoughSegment** | startLat, startLon, endLat, endLon: Double, intensity: Double (0–1), timestamp: Date | trip ↔ Trip (to-one, nullify) |
 
